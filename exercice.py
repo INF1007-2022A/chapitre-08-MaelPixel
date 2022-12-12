@@ -24,15 +24,34 @@ def comparer2fichiers(fichier_1,fichier_2):
     fichier1.close()
     return True
 def triplagedespace(fichier1):
-    with open(fichier1,"+") as f1:
-        for count,ligne in enumerate(f1):
-            ligne.replace(" ","   ")
+    with open(fichier1,"r") as f1:
+        data=f1.readlines()
+        for count,ligne in enumerate(data):
+            data[count]=ligne.replace(" ","   ")
     f1.close()
-
-
-    return
+    with open(fichier1,"w") as f1:
+        f1.writelines(data)
+    return f1
+def assignationdenote(fichier,tableau):
+    with open(fichier,"r") as f:
+        data=f.readlines()
+        for note in data:
+            for key in tableau:
+                notetrier=note.replace("\n","")
+                bareme=tableau[key][0]
+                if int(notetrier)-bareme<0:
+                    continue
+                elif int(notetrier)-bareme>0:
+                    data[data.index(note)]=f"{key},{note}"
+                    break
+    f.close()
+    with open(fichier,"w") as f:
+        f.writelines(data)
+    return f
 if __name__ == '__main__':
     # TODO: Appelez vos fonctions ici
     Directoire="C:\\Users\\Mael\\Documents\\GitHub\\chapitre-08-MaelPixel\\"
-    print(comparer2fichiers(Directoire+"settings\\"+"essaie1.txt",Directoire+"settings\\"+"essaie2.txt"))
+    #print(comparer2fichiers(Directoire+"settings\\"+"essaie1.txt",Directoire+"settings\\"+"essaie2.txt"))
+    #print(triplagedespace(Directoire+"settings\\essaie1.txt"))
+    print(assignationdenote(Directoire+"notes.txt",PERCENTAGE_TO_LETTER))
     pass
